@@ -1,0 +1,84 @@
+body {
+    background-image: url("images/background_image.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    position: static;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 60px;
+}
+
+.title {
+    margin: 10px;
+    color: cadetblue;
+    cursor: pointer;
+}
+
+.header_image {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 0px;
+    padding-right: 1px;
+}
+
+@keyframes header_image-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg)
+    }
+}
+
+.header:hover .header_image {
+    animation-name: header_image-animation;
+    animation-duration: 2s;
+}
+
+.big_latters {
+    color: rgb(36, 36, 73);
+    font-size: 45px;
+}
+
+.find_button {
+    padding: 3px 8px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: cadetblue;
+    color: rgb(36, 36, 73);
+}
+
+@keyframes find_button_animation {
+    0% {
+        color: rgb(36, 36, 73);
+    }
+    25% {
+        color: white;
+    }
+    50% {
+        color: rgb(36, 36, 73);
+    }
+    75% {
+        color: white;
+    }
+    100% {
+        color: rgb(36, 36, 73);
+    }
+}
+
+.find_button:hover {
+    animation-name: find_button_animation;
+    animation-duration: 5s;
+    cursor: pointer;
+}
