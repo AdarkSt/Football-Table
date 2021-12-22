@@ -1,4 +1,6 @@
 body {
+    display: flex;
+    flex-direction: column;
     background-image: url("images/background_image.png");
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -18,7 +20,7 @@ body {
 .title {
     margin: 10px;
     color: cadetblue;
-    cursor: pointer;
+    cursor: default;
 }
 
 .header_image {
@@ -81,4 +83,12 @@ body {
     animation-name: find_button_animation;
     animation-duration: 5s;
     cursor: pointer;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 150px;
+    width: 83%;
 }
