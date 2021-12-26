@@ -1,5 +1,6 @@
 function createTableHeader(table, tableStandard) {
     const tHeadElement = document.createElement("tHead");
+
     const headerTrElement = document.createElement("tr");
     for (let collName of tableStandard.collumnNames) {
         const curentHeaderThElement = document.createElement("th");
@@ -7,6 +8,7 @@ function createTableHeader(table, tableStandard) {
         curentHeaderThElement.className += tableStandard.thElementClassName;
         headerTrElement.append(curentHeaderThElement);
     }
+    headerTrElement.className += tableStandard.headerTrElementClassName;
     tHeadElement.append(headerTrElement);
     table.append(tHeadElement);
 }
@@ -19,7 +21,7 @@ function createTableBody(table, tableStandard, data) {
             const currentBodyTdElement = document.createElement("td");
             if (key != "events") {
                 currentBodyTdElement.textContent = object[key];
-                currentBodyTdElement.className += tableStandard.tdElementClassName;
+
             } else {
                 const aElement = document.createElement("a")
                 aElement.textContent = "View Match";
@@ -28,8 +30,10 @@ function createTableBody(table, tableStandard, data) {
                 aElement.className += tableStandard.aElementClassName;
                 currentBodyTdElement.append(aElement);
             }
+            currentBodyTdElement.className += tableStandard.tdElementClassName;
             currentBodyTrElement.append(currentBodyTdElement);
         }
+        currentBodyTrElement.className += tableStandard.tBodyTrElementClassName;
         tBodyElement.append(currentBodyTrElement);
     }
     table.append(tBodyElement);
@@ -39,5 +43,6 @@ export function createTable(tableStandard, data) {
     const tableElement = document.createElement("table");
     createTableHeader(tableElement, tableStandard);
     createTableBody(tableElement, tableStandard, data);
+    tableElement.className += tableStandard.tableElementClassName;
     return tableElement;
 }

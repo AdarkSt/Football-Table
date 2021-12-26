@@ -15,10 +15,13 @@ async function findMathes(tableStandard, url) {
     return dataObjects;
 }
 
-const findButton = document.querySelector(".find_button");
-findButton.addEventListener("click", async() => {
+async function findButtonClickHandler() {
     const data = await findMathes(tableStandard, url);
     const table = createTable(tableStandard, data);
     const main = document.querySelector(".main");
     main.append(table);
-});
+    findButton.removeEventListener("click", findButtonClickHandler);
+}
+
+const findButton = document.querySelector(".find_button");
+findButton.addEventListener("click", findButtonClickHandler);

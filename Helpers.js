@@ -8,7 +8,9 @@ export function objectMaker(tableStandard, baseObject) {
         } else if (value == "league") {
             object[value] = baseObject.competition;
         } else if (value == "date") {
-            object[value] = baseObject.date;
+            let date = baseObject.date.slice(0, 10);
+            let time = baseObject.date.slice(11, 16);
+            object[value] = date + "/" + time;
         }
     }
     return object;
