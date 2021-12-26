@@ -30,6 +30,18 @@ function createTableBody(table, tableStandard, data) {
                 aElement.className += tableStandard.aElementClassName;
                 currentBodyTdElement.append(aElement);
             }
+            if (key == "buttons") {
+                for (let value of tableStandard.buttons) {
+                    const td_button = document.createElement("button");
+                    td_button.textContent = value;
+                    td_button.className = tableStandard.tdButtonClassName;
+                    td_button.myId = object.id;
+                    currentBodyTdElement.append(td_button);
+                }
+            }
+            if (key == "id") {
+                continue;
+            }
             currentBodyTdElement.className += tableStandard.tdElementClassName;
             currentBodyTrElement.append(currentBodyTdElement);
         }
