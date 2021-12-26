@@ -90,5 +90,13 @@ body {
     flex-direction: column;
     position: relative;
     left: 150px;
-    width: 83%;
+    width: 80%;
+}
+
+.table_th_elements {
+    color: white;
+}
+
+.table_td-elements {
+    color: white;
 }
