@@ -1,6 +1,5 @@
 function createTableHeader(table, tableStandard) {
     const tHeadElement = document.createElement("tHead");
-
     const headerTrElement = document.createElement("tr");
     for (let collName of tableStandard.collumnNames) {
         const curentHeaderThElement = document.createElement("th");
@@ -13,44 +12,6 @@ function createTableHeader(table, tableStandard) {
     table.append(tHeadElement);
 }
 
-function createTableBody(table, tableStandard, data) {
-    const tBodyElement = document.createElement("tbody");
-    for (let object of data) {
-        const currentBodyTrElement = document.createElement("tr");
-        for (let key of Object.keys(object)) {
-            const currentBodyTdElement = document.createElement("td");
-            if (key != "events") {
-                currentBodyTdElement.textContent = object[key];
-
-            } else {
-                const aElement = document.createElement("a")
-                aElement.textContent = "View Match";
-                aElement.target = "_blank";
-                aElement.href = object[key];
-                aElement.className += tableStandard.aElementClassName;
-                currentBodyTdElement.append(aElement);
-            }
-            if (key == "buttons") {
-                for (let value of tableStandard.buttons) {
-                    const td_button = document.createElement("button");
-                    td_button.textContent = value;
-                    td_button.className = tableStandard.tdButtonClassName;
-                    td_button.myId = object.id;
-                    currentBodyTdElement.append(td_button);
-                }
-            }
-            if (key == "id") {
-                continue;
-            }
-            currentBodyTdElement.className += tableStandard.tdElementClassName;
-            currentBodyTrElement.append(currentBodyTdElement);
-        }
-        currentBodyTrElement.className += tableStandard.tBodyTrElementClassName;
-        tBodyElement.append(currentBodyTrElement);
-    }
-    table.append(tBodyElement);
-}
-
 export function rowEditor(event) {
     const row = event.target.parentNode.parentNode;
     for (let tdElement of row.children) {
@@ -60,7 +21,7 @@ export function rowEditor(event) {
     }
 }
 
-export function rowDeleter(data, event, table) {
+export function rowDeleter(data, event, tableElement) {
     let index = 0;
     for (let object of data) {
         if (object.id == event.target.myId) {
@@ -70,7 +31,7 @@ export function rowDeleter(data, event, table) {
         index++
     }
     const row = event.target.parentNode.parentNode;
-    table.querySelector("tbody").removeChild(row);
+    tableElement.querySelector("tbody").removeChild(row);
     return data;
 }
 
@@ -80,10 +41,58 @@ export function removeAllChildNodes(parent) {
     }
 }
 
-export function createTable(tableStandard, data) {
+export function addRow(tableStandard, table) {
+    const row = table.element.lastChild.insertRow(0);
+    row.className = tableStandard.tBodyTrElementClassName;
+    const object = {}
+    for (let elem of tableStandard.tableView) {
+        const cell = row.insertCell(-1);
+        cell.className = tableStandard.tdElementClassName;
+        if (elem == "data") {
+            cell.setAttribute("contenteditable", "true");
+            cell.addEventListener("click", (clickEvent) => {
+                const currentCell = clickEvent.target;
+                currentCell.addEventListener("keydown", (keyEvent) => {
+                    if (keyEvent.key == "Enter" && keyEvent.shiftKey) {
+                        currentCell.setAttribute("contenteditable", "false");
+                        const childrens = Array.from(row.children)
+                        let currentCellIndexInRow = childrens.findIndex(element => {
+                            if (element.textContent == currentCell.textContent) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        object[tableStandard.dataView[currentCellIndexInRow]] = currentCell.textContent;
+                        console.log(object);
+                    }
+                })
+            })
+        } else if (elem == "link") {
+            const aElement = document.createElement("a");
+            aElement.className = tableStandard.aElementClassName;
+            aElement.textContent = "click me";
+            cell.append(aElement);
+        } else if (elem == "navigation") {
+            for (let buttonName of tableStandard.buttons) {
+                const buttonElement = document.createElement("button");
+                buttonElement.className = tableStandard.tdButtonClassName;
+                buttonElement.textContent = buttonName;
+                cell.append(buttonElement);
+            }
+        }
+    }
+    return row;
+}
+
+export function createTable(tableStandard, firstData = []) {
     const tableElement = document.createElement("table");
     createTableHeader(tableElement, tableStandard);
-    createTableBody(tableElement, tableStandard, data);
+    const tbody = document.createElement("tbody");
+    tableElement.append(tbody);
     tableElement.className += tableStandard.tableElementClassName;
-    return tableElement;
+    const tableData = firstData;
+    return {
+        data: tableData,
+        element: tableElement,
+    }
 }

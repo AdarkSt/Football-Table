@@ -135,6 +135,7 @@ body {
 .td_a {
     color: white;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .td_a:hover {
