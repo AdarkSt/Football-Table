@@ -1,4 +1,6 @@
-function getRandomIntInclusive(min = 100, max = 100000) {
+import { doRequest } from "./Requestes.js";
+
+function getRandomInt(min = 100, max = 100000) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -6,7 +8,7 @@ function getRandomIntInclusive(min = 100, max = 100000) {
 
 export function objectMaker(tableStandard, baseObject) {
     const object = {
-        id: getRandomIntInclusive(),
+        id: getRandomInt(),
     };
     for (let value of tableStandard.dataView) {
         if (value == "events") {
@@ -24,4 +26,15 @@ export function objectMaker(tableStandard, baseObject) {
         }
     }
     return object;
+}
+
+export async function createData(tableStandard, url) {
+    const matches = await doRequest(url);
+    const matchesArray = matches.response;
+    const dataObjects = [];
+    matchesArray.forEach(item => {
+        dataObjects.push(objectMaker(tableStandard, item));
+    })
+    console.log(dataObjects);
+    return dataObjects;
 }

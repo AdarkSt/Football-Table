@@ -1,45 +1,31 @@
-import { doRequest } from "./Requestes.js";
 import { url } from "./Constants.js"
 import { tableStandard } from "./Constants.js";
-import { createTable } from "./Table.js"
+import { createData } from "./Helpers.js";
+import { createTable, removeAllChildNodes, rowDeleter, rowEditor } from "./Table.js"
 import { objectMaker } from "./Helpers.js"
 import { createdTableStandard } from "./Constants.js"
 
-function rowDeleter(data, event, table) {
-    let index = 0;
-    for (let object of data) {
-        if (object.id == event.target.myId) {
-            data.splice(index, 1);
-            break;
-        }
-        index++
-    }
-    const row = event.target.parentNode.parentNode;
-    table.querySelector("tbody").removeChild(row);
-    return data;
-}
 
-async function findMathes(tableStandard, url) {
-    const matches = await doRequest(url);
-    const matchesArray = matches.response;
-    const dataObjects = [];
-    matchesArray.forEach(item => {
-        dataObjects.push(objectMaker(tableStandard, item));
-    })
-    console.log(dataObjects);
-    return dataObjects;
+function rowSaver(data, event, table) {
+
 }
 
 async function findButtonClickHandler() {
-    let data = await findMathes(tableStandard, url);
+    let data = await createData(tableStandard, url);
     const table = createTable(tableStandard, data);
     const main = document.querySelector(".main");
+    if (main.hasChildNodes()) {
+        removeAllChildNodes(main);
+    }
     main.append(table);
-    const tdButtons = document.querySelectorAll(".td_button");
+    const tdButtons = document.querySelectorAll(`.${tableStandard.tdButtonClassName}`);
     for (let button of tdButtons) {
         button.addEventListener("click", (event) => {
             if (button.textContent == "Delete") {
                 data = rowDeleter(data, event, table);
+            }
+            if (button.textContent == "Update") {
+                data = rowEditor(event);
             }
         })
     }
@@ -48,18 +34,30 @@ async function findButtonClickHandler() {
 
 function headerCreateButtonClickHandler() {
     const main = document.body.querySelector(".main");
-    let table = document.querySelector(".table_Element")
-    main.removeChild(table);
-    const data = [objectMaker(createdTableStandard, {
+    let table = document.querySelector(`.${tableStandard.tableElementClassName}`)
+    if (main.hasChildNodes()) {
+        removeAllChildNodes(main);
+    }
+    let data = [objectMaker(createdTableStandard, {
         date: "",
     })]
     table = createTable(createdTableStandard, data)
     main.append(table);
+    const tdButtons = document.querySelectorAll(`.${createdTableStandard.tdButtonClassName}`);
+    for (let button of tdButtons) {
+        button.addEventListener("click", (event) => {
+            if (button.textContent == "Delete") {
+                data = rowDeleter(data, event, table);
+            }
+            if (button.textContent == "Edit") {
+                data = rowEditor(event);
+            }
+        })
+    }
     findButton.addEventListener("click", findButtonClickHandler)
 }
 
 const findButton = document.querySelector(".find_button");
 findButton.addEventListener("click", findButtonClickHandler);
 const createButton = document.querySelector(".table_create_button");
-
 createButton.addEventListener("click", headerCreateButtonClickHandler);

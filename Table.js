@@ -51,6 +51,35 @@ function createTableBody(table, tableStandard, data) {
     table.append(tBodyElement);
 }
 
+export function rowEditor(event) {
+    const row = event.target.parentNode.parentNode;
+    for (let tdElement of row.children) {
+        if (tdElement != event.target.parentNode) {
+            tdElement.setAttribute("contenteditable", "true");
+        }
+    }
+}
+
+export function rowDeleter(data, event, table) {
+    let index = 0;
+    for (let object of data) {
+        if (object.id == event.target.myId) {
+            data.splice(index, 1);
+            break;
+        }
+        index++
+    }
+    const row = event.target.parentNode.parentNode;
+    table.querySelector("tbody").removeChild(row);
+    return data;
+}
+
+export function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 export function createTable(tableStandard, data) {
     const tableElement = document.createElement("table");
     createTableHeader(tableElement, tableStandard);
