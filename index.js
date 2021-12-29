@@ -1,7 +1,6 @@
-import { url } from "./constants.js"
-import { tableStandard } from "./constants.js";
+import { tableStandard, url } from "./constants.js";
 import { createData } from "./helpers.js";
-import { addRow, createTable, removeAllChildNodes, rowDeleter } from "./table.js"
+import { addRow, createTable } from "./table.js"
 import { objectMaker } from "./helpers.js"
 
 const findButton = document.querySelector(".find_button");
