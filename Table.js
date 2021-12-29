@@ -1,3 +1,5 @@
+import { findCountOf, getRandomInt } from "./Helpers.js"
+
 function createTableHeader(table, tableStandard) {
     const tHeadElement = document.createElement("tHead");
     const headerTrElement = document.createElement("tr");
@@ -10,6 +12,11 @@ function createTableHeader(table, tableStandard) {
     headerTrElement.className += tableStandard.headerTrElementClassName;
     tHeadElement.append(headerTrElement);
     table.append(tHeadElement);
+}
+
+function createTableBody(table) {
+    const tbody = document.createElement("tbody");
+    table.append(tbody);
 }
 
 export function rowEditor(event) {
@@ -63,7 +70,11 @@ export function addRow(tableStandard, table) {
                             return false;
                         })
                         object[tableStandard.dataView[currentCellIndexInRow]] = currentCell.textContent;
-                        console.log(object);
+                        if (Object.keys(object).length == findCountOf(tableStandard.tableView, "data")) {
+                            object.id = getRandomInt();
+                            console.log(object);
+                            table.data.push(object);
+                        }
                     }
                 })
             })
@@ -87,8 +98,7 @@ export function addRow(tableStandard, table) {
 export function createTable(tableStandard, firstData = []) {
     const tableElement = document.createElement("table");
     createTableHeader(tableElement, tableStandard);
-    const tbody = document.createElement("tbody");
-    tableElement.append(tbody);
+    createTableBody(tableElement);
     tableElement.className += tableStandard.tableElementClassName;
     const tableData = firstData;
     return {
