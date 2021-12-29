@@ -1,4 +1,4 @@
-import { doRequest } from "./Requestes.js";
+import { doRequest } from "./requestes.js";
 
 export function getRandomInt(min = 100, max = 100000) {
     min = Math.ceil(min);

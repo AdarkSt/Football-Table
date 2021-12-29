@@ -1,8 +1,8 @@
-import { url } from "./Constants.js"
-import { tableStandard } from "./Constants.js";
-import { createData } from "./Helpers.js";
-import { addRow, createTable, removeAllChildNodes, rowDeleter, rowEditor } from "./Table.js"
-import { objectMaker } from "./Helpers.js"
+import { url } from "./constants.js"
+import { tableStandard } from "./constants.js";
+import { createData } from "./helpers.js";
+import { addRow, createTable, removeAllChildNodes, rowDeleter } from "./table.js"
+import { objectMaker } from "./helpers.js"
 
 const findButton = document.querySelector(".find_button");
 findButton.addEventListener("click", handleFindButtonClick);

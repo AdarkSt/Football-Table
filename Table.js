@@ -1,4 +1,4 @@
-import { findCountOf, getRandomInt } from "./Helpers.js"
+import { findCountOf, getRandomInt } from "./helpers.js"
 
 function createTableHeader(table, tableStandard) {
     const tHeadElement = document.createElement("tHead");
@@ -19,13 +19,26 @@ function createTableBody(table) {
     table.append(tbody);
 }
 
-export function rowEditor(event) {
-    const row = event.target.parentNode.parentNode;
-    for (let tdElement of row.children) {
-        if (tdElement != event.target.parentNode) {
-            tdElement.setAttribute("contenteditable", "true");
+function updater(clickEvent, table, tableStandard, row, object) {
+    const currentCell = clickEvent.target;
+    currentCell.addEventListener("keydown", (keyEvent) => {
+        if (keyEvent.key == "Enter" && keyEvent.shiftKey) {
+            currentCell.setAttribute("contenteditable", "false");
+            const childrens = Array.from(row.children)
+            let currentCellIndexInRow = childrens.findIndex(element => {
+                if (element.textContent == currentCell.textContent) {
+                    return true;
+                }
+                return false;
+            })
+            object[tableStandard.dataView[currentCellIndexInRow]] = currentCell.textContent;
+            if (Object.keys(object).length == findCountOf(tableStandard.tableView, "data")) {
+                object.id = getRandomInt();
+                console.log(object);
+                table.data.push(object);
+            }
         }
-    }
+    })
 }
 
 export function rowDeleter(data, event, tableElement) {
@@ -58,25 +71,7 @@ export function addRow(tableStandard, table) {
         if (elem == "data") {
             cell.setAttribute("contenteditable", "true");
             cell.addEventListener("click", (clickEvent) => {
-                const currentCell = clickEvent.target;
-                currentCell.addEventListener("keydown", (keyEvent) => {
-                    if (keyEvent.key == "Enter" && keyEvent.shiftKey) {
-                        currentCell.setAttribute("contenteditable", "false");
-                        const childrens = Array.from(row.children)
-                        let currentCellIndexInRow = childrens.findIndex(element => {
-                            if (element.textContent == currentCell.textContent) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        object[tableStandard.dataView[currentCellIndexInRow]] = currentCell.textContent;
-                        if (Object.keys(object).length == findCountOf(tableStandard.tableView, "data")) {
-                            object.id = getRandomInt();
-                            console.log(object);
-                            table.data.push(object);
-                        }
-                    }
-                })
+                updater(clickEvent, table, tableStandard, row, object);
             })
         } else if (elem == "link") {
             const aElement = document.createElement("a");
