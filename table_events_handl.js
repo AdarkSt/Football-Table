@@ -54,7 +54,17 @@ export class EventHandling {
             }
         }
         if (event.target.textContent == "Update") {
-
+            console.log(event.target);
+            const currentRowCells = event.target.parentNode.parentNode.children;
+            const childrensOfRow = Array.from(currentRowCells);
+            let indexInTableView = 0
+            for (let cell of childrensOfRow) {
+                if (this.tableStandard.tableView[indexInTableView] == "data") {
+                    cell.setAttribute("contenteditable", "true");
+                    ++indexInTableView;
+                }
+                this.updater(event, this.data, this.tableStandard, this.row, this.object);
+            }
         }
         if (event.target.nodeName != "button") {
             this.updater(event, this.data, this.tableStandard, this.row, this.object);
